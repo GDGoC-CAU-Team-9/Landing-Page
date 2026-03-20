@@ -13,17 +13,28 @@ const sections = [
 
 type ShotCardProps = {
   title: string;
-  subtitle: string;
   src: string;
   alt: string;
 };
 
-function ShotCard({ title, subtitle, src, alt }: ShotCardProps) {
+const heroCarousel = [
+  {
+    title: '로그인 화면',
+    src: '/images/login.png',
+    alt: 'SafePlate 로그인 화면'
+  },
+  {
+    title: '사이드바 화면',
+    src: '/images/sidebar.png',
+    alt: 'SafePlate 사이드바 화면'
+  }
+] as const;
+
+function ShotCard({ title, src, alt }: ShotCardProps) {
   return (
     <article className="shot-card">
       <div className="shot-text">
         <h3>{title}</h3>
-        <p>{subtitle}</p>
       </div>
       <div className="shot-media">
         <Image src={src} alt={alt} width={420} height={900} className="shot-image" />
@@ -34,6 +45,7 @@ function ShotCard({ title, subtitle, src, alt }: ShotCardProps) {
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
+  const [heroIndex, setHeroIndex] = useState(0);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -55,6 +67,14 @@ export default function Home() {
     });
 
     return () => sectionObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroCarousel.length);
+    }, 3000);
+
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
@@ -97,10 +117,15 @@ export default function Home() {
       >
         <div className="content hero">
           <div className="hero-copy">
-            <h1>SafePlate</h1>
+            <p className="eyebrow">SafePlate</p>
+            <h1>App Design</h1>
             <p className="lead">
-              알러지, 종교, 식습관에 따른 기피 재료를 반영해 메뉴판을 분석하고,
-              더 안전한 메뉴 선택을 돕는 모바일 앱입니다.
+              SafePlate는 민트/스카이 기반의 부드러운 톤과 직관적인 정보 계층으로,
+              사용자에게 안전한 메뉴 선택 과정을 빠르게 안내하도록 설계했습니다.
+            </p>
+            <p className="lead secondary">
+              핵심 화면은 입력과 결과 확인에 집중할 수 있게 구성하고, 한눈에 읽히는
+              인터페이스를 목표로 디자인했습니다.
             </p>
             <div className="cta-row">
               <a
@@ -117,27 +142,29 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hero-stats">
-            <div className="feature-card">
-              <span>🌿</span>
-              <h3>개인화 분석</h3>
-              <p>기피 재료 기반 메뉴 필터링</p>
-            </div>
-            <div className="feature-card">
-              <span>🌐</span>
-              <h3>다국어 UX</h3>
-              <p>글로벌 팀/사용자 대응</p>
-            </div>
-            <div className="feature-card">
-              <span>🧠</span>
-              <h3>결과 하이라이트</h3>
-              <p>위험 메뉴를 직관적으로 표시</p>
-            </div>
-            <div className="feature-card">
-              <span>📚</span>
-              <h3>분석 기록</h3>
-              <p>이력 조회로 빠른 재확인</p>
-            </div>
+          <div className="hero-preview">
+            <article className="shot-card hero-switch-card" key={heroCarousel[heroIndex].src}>
+              <div className="shot-text">
+                <h3>{heroCarousel[heroIndex].title}</h3>
+              </div>
+              <div className="shot-media hero-switch-media">
+                <Image
+                  src={heroCarousel[heroIndex].src}
+                  alt={heroCarousel[heroIndex].alt}
+                  width={420}
+                  height={900}
+                  className="shot-image hero-switch-image"
+                />
+              </div>
+              <div className="switch-dots" aria-hidden="true">
+                {heroCarousel.map((item, idx) => (
+                  <span
+                    key={item.src}
+                    className={`switch-dot ${idx === heroIndex ? 'is-active' : ''}`}
+                  />
+                ))}
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -151,23 +178,12 @@ export default function Home() {
       >
         <div className="content section-content">
           <div className="section-head">
-            <p className="eyebrow">Step 1</p>
             <h2>로그인과 사이드바</h2>
             <p>앱 진입과 핵심 메뉴 접근 흐름을 한 화면에서 보여줍니다.</p>
           </div>
           <div className="shot-grid">
-            <ShotCard
-              title="로그인 화면"
-              subtitle="빠른 인증으로 바로 시작"
-              src="/images/login.png"
-              alt="SafePlate 로그인 화면"
-            />
-            <ShotCard
-              title="사이드바 화면"
-              subtitle="기능 탐색 중심 허브"
-              src="/images/sidebar.png"
-              alt="SafePlate 사이드바 화면"
-            />
+            <ShotCard title="로그인 화면" src="/images/login.png" alt="SafePlate 로그인 화면" />
+            <ShotCard title="사이드바 화면" src="/images/sidebar.png" alt="SafePlate 사이드바 화면" />
           </div>
         </div>
       </section>
@@ -181,23 +197,12 @@ export default function Home() {
       >
         <div className="content section-content">
           <div className="section-head">
-            <p className="eyebrow">Step 2</p>
             <h2>언어 변경과 분석기록</h2>
             <p>언어 설정과 과거 결과 이력 확인으로 분석 흐름을 이어갑니다.</p>
           </div>
           <div className="shot-grid">
-            <ShotCard
-              title="언어 변경 화면"
-              subtitle="팀 상황에 맞는 언어 선택"
-              src="/images/language.png"
-              alt="SafePlate 언어 변경 화면"
-            />
-            <ShotCard
-              title="분석 기록 화면"
-              subtitle="이전 분석 결과 재확인"
-              src="/images/history.png"
-              alt="SafePlate 분석 기록 화면"
-            />
+            <ShotCard title="언어 변경 화면" src="/images/language.png" alt="SafePlate 언어 변경 화면" />
+            <ShotCard title="분석 기록 화면" src="/images/history.png" alt="SafePlate 분석 기록 화면" />
           </div>
         </div>
       </section>
@@ -211,23 +216,12 @@ export default function Home() {
       >
         <div className="content section-content">
           <div className="section-head">
-            <p className="eyebrow">Step 3</p>
             <h2>기피재료 입력과 분석 결과</h2>
             <p>기피재료를 반영해 실제 메뉴판 분석 결과를 즉시 확인합니다.</p>
           </div>
           <div className="shot-grid">
-            <ShotCard
-              title="기피재료 입력 화면"
-              subtitle="개인/팀 기준 금기 재료 등록"
-              src="/images/avoid.png"
-              alt="SafePlate 기피재료 입력 화면"
-            />
-            <ShotCard
-              title="분석 결과 화면"
-              subtitle="위험 항목 시각 하이라이트"
-              src="/images/result.png"
-              alt="SafePlate 메뉴 분석 결과 화면"
-            />
+            <ShotCard title="기피재료 입력 화면" src="/images/avoid.png" alt="SafePlate 기피재료 입력 화면" />
+            <ShotCard title="분석 결과 화면" src="/images/result.png" alt="SafePlate 메뉴 분석 결과 화면" />
           </div>
         </div>
       </section>
@@ -241,7 +235,6 @@ export default function Home() {
       >
         <div className="content section-content">
           <div className="section-head">
-            <p className="eyebrow">Step 4</p>
             <h2>스캔 후 분석 완료 반영</h2>
             <p>검은 스캔 바가 지나간 영역이 분석 완료 상태로 바뀌는 연출입니다.</p>
           </div>

@@ -257,15 +257,10 @@ p {
   font-size: clamp(1rem, 1.7vw, 1.16rem);
 }
 
-.flow-box {
-  margin-top: 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(123, 160, 188, 0.28);
-  background: linear-gradient(130deg, rgba(126, 215, 190, 0.2) 0%, rgba(132, 181, 228, 0.2) 100%);
-  backdrop-filter: blur(8px);
-  padding: 12px 14px;
-  font-weight: 600;
-  color: #325a77;
+.lead.secondary {
+  margin-top: 10px;
+  font-size: clamp(0.94rem, 1.45vw, 1.04rem);
+  opacity: 0.95;
 }
 
 .cta-row {
@@ -295,32 +290,44 @@ p {
   background: rgba(255, 255, 255, 0.46);
 }
 
-.hero-stats {
+.hero-preview {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+}
+
+.hero-switch-card {
+  width: min(100%, 460px);
   gap: 12px;
 }
 
-.feature-card {
-  border-radius: 18px;
-  border: 1px solid rgba(139, 173, 199, 0.36);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.62) 0%, rgba(238, 248, 255, 0.56) 100%);
-  backdrop-filter: blur(10px);
-  padding: 14px;
+.hero-switch-media {
+  padding: 10px;
 }
 
-.feature-card span {
-  font-size: 1.2rem;
+.hero-switch-image {
+  height: clamp(420px, 63vh, 660px);
 }
 
-.feature-card h3 {
-  margin-top: 7px;
-  color: #2d5f83;
+.switch-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2px;
 }
 
-.feature-card p {
-  margin-top: 5px;
-  font-size: 0.9rem;
+.switch-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(119, 152, 178, 0.45);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.switch-dot.is-active {
+  background: rgba(44, 108, 148, 0.88);
+  transform: scale(1.25);
 }
 
 .section-content {
@@ -357,7 +364,7 @@ p {
 }
 
 .shot-text p {
-  margin-top: 4px;
+  margin-top: 0;
   font-size: 0.9rem;
 }
 
@@ -373,7 +380,7 @@ p {
 
 .shot-image {
   width: 100%;
-  height: clamp(240px, 44vh, 500px);
+  height: clamp(280px, 48vh, 560px);
   object-fit: contain;
   display: block;
 }
@@ -504,6 +511,10 @@ p {
     grid-template-columns: 1fr;
     gap: 14px;
   }
+
+  .hero-switch-card {
+    width: min(100%, 390px);
+  }
 }
 
 @media (max-width: 860px) {
@@ -520,13 +531,16 @@ p {
     padding: 16px;
   }
 
-  .hero-stats,
   .shot-grid {
     grid-template-columns: 1fr;
   }
 
   .shot-image {
-    height: clamp(250px, 55vh, 520px);
+    height: clamp(260px, 56vh, 600px);
+  }
+
+  .hero-switch-image {
+    height: clamp(420px, 58vh, 620px);
   }
 
   .scroll-nav {
