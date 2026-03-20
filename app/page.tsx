@@ -104,7 +104,7 @@ function ShowcaseBlock({
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
   const [showcaseTick, setShowcaseTick] = useState(0);
-  const [isAutoScrollArmed, setIsAutoScrollArmed] = useState(false);
+  const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const activeSectionRef = useRef(activeSection);
 
@@ -117,17 +117,42 @@ export default function Home() {
   }, [activeSection]);
 
   useEffect(() => {
+    const firstSection = sectionRefs.current[0];
+    if (firstSection) {
+      firstSection.classList.add('is-visible');
+      if (firstSection.id) setActiveSection(firstSection.id);
+    }
+
+    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+      sectionRefs.current.forEach((section) => section?.classList.add('is-visible'));
+      return;
+    }
+
     const sectionObserver = new IntersectionObserver(
       (entries) => {
+        let bestRatio = 0;
+        let nextActiveId = '';
+
         entries.forEach((entry) => {
-          if (!entry.target.id) return;
+          const entryId = (entry.target as HTMLElement).id;
+          if (!entryId) return;
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
             entry.target.classList.add('is-visible');
+            if (entry.intersectionRatio >= bestRatio) {
+              bestRatio = entry.intersectionRatio;
+              nextActiveId = entryId;
+            }
           }
         });
+
+        if (nextActiveId) {
+          setActiveSection(nextActiveId);
+        }
       },
-      { threshold: 0.42 }
+      {
+        threshold: [0.12, 0.22, 0.32],
+        rootMargin: '-6% 0px -10% 0px'
+      }
     );
 
     sectionRefs.current.forEach((section) => {
@@ -146,7 +171,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!isAutoScrollArmed) return;
+    if (!isAutoScrollEnabled) return;
 
     const timer = window.setInterval(() => {
       const currentIndex = sections.findIndex((section) => section.id === activeSectionRef.current);
@@ -156,7 +181,7 @@ export default function Home() {
     }, 6000);
 
     return () => window.clearInterval(timer);
-  }, [isAutoScrollArmed]);
+  }, [isAutoScrollEnabled]);
 
   return (
     <main className="page">
@@ -189,15 +214,13 @@ export default function Home() {
         ))}
         <button
           type="button"
-          className={`auto-scroll-trigger ${isAutoScrollArmed ? 'is-active' : ''}`}
-          aria-label="자동 스크롤 미리보기"
-          title="마우스를 올리면 6초마다 다음 섹션으로 이동합니다."
-          onMouseEnter={() => setIsAutoScrollArmed(true)}
-          onMouseLeave={() => setIsAutoScrollArmed(false)}
-          onFocus={() => setIsAutoScrollArmed(true)}
-          onBlur={() => setIsAutoScrollArmed(false)}
+          className={`auto-scroll-trigger ${isAutoScrollEnabled ? 'is-active' : ''}`}
+          aria-label="자동 스크롤 재생 또는 일시정지"
+          aria-pressed={isAutoScrollEnabled}
+          title={isAutoScrollEnabled ? '자동 스크롤 정지' : '자동 스크롤 시작 (6초 간격)'}
+          onClick={() => setIsAutoScrollEnabled((prev) => !prev)}
         >
-          <span aria-hidden="true">▶</span>
+          <span aria-hidden="true">{isAutoScrollEnabled ? '❚❚' : '▶'}</span>
         </button>
       </nav>
 
@@ -228,23 +251,23 @@ export default function Home() {
 
           <div className="overview-features">
             <article className="overview-feature-card">
-              <span>🌿</span>
-              <h3>기피재료 기반 AI 분석</h3>
-              <p>개인/팀 기준으로 위험 메뉴를 필터링</p>
-            </article>
-            <article className="overview-feature-card">
               <span>🌐</span>
               <h3>다국어 지원</h3>
               <p>언어 설정과 변경으로 글로벌 환경 대응</p>
             </article>
             <article className="overview-feature-card">
               <span>🤖</span>
-              <h3>AI 문장 이해</h3>
+              <h3>AI 기피재료 추출</h3>
               <p>문장 입력에서 기피재료 자동 추출</p>
             </article>
             <article className="overview-feature-card">
+              <span>🌿</span>
+              <h3>기피재료 기반 AI 메뉴 분석</h3>
+              <p>개인/팀 기준으로 위험 메뉴를 필터링</p>
+            </article>
+            <article className="overview-feature-card">
               <span>📚</span>
-              <h3>분석 기록 저장</h3>
+              <h3>분석기록 저장</h3>
               <p>분석 결과 재확인 가능</p>
             </article>
           </div>
