@@ -123,39 +123,13 @@ body {
   top: 50%;
   right: 14px;
   transform: translateY(-50%);
-  display: grid;
-  justify-items: center;
-  gap: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 40;
 }
 
-.dot {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  text-decoration: none;
-  color: #5c7487;
-  font-size: 11px;
-  font-weight: 700;
-  border: 1px solid rgba(126, 162, 189, 0.34);
-  background: rgba(245, 251, 255, 0.82);
-  backdrop-filter: blur(8px);
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.dot:hover {
-  transform: scale(1.05);
-}
-
-.dot.is-active {
-  color: #1f4f71;
-  background: linear-gradient(130deg, rgba(125, 214, 189, 0.36) 0%, rgba(140, 184, 230, 0.34) 100%);
-}
-
 .auto-scroll-trigger {
-  position: relative;
   width: 34px;
   height: 34px;
   border-radius: 999px;
@@ -168,17 +142,6 @@ body {
   padding: 0;
   margin-top: 4px;
   transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-}
-
-.auto-scroll-trigger::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  width: 1px;
-  height: 8px;
-  background: rgba(155, 183, 205, 0.62);
-  transform: translateX(-50%);
 }
 
 .auto-scroll-trigger span {
@@ -711,13 +674,6 @@ p {
 
   .scroll-nav {
     right: 7px;
-    gap: 6px;
-  }
-
-  .dot {
-    width: 30px;
-    height: 30px;
-    font-size: 10px;
   }
 
   .auto-scroll-trigger {

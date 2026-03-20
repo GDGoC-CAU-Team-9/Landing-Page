@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 const sections = [
-  { id: 'section-1', label: '01', title: '소개' },
-  { id: 'section-2', label: '02', title: '디자인' },
-  { id: 'section-3', label: '03', title: '언어/기피재료' },
-  { id: 'section-4', label: '04', title: 'AI분석/결과' },
-  { id: 'section-5', label: '05', title: '분석 완료' }
+  { id: 'section-1', title: '소개' },
+  { id: 'section-2', title: '디자인' },
+  { id: 'section-3', title: '언어/기피재료' },
+  { id: 'section-4', title: 'AI분석/결과' },
+  { id: 'section-5', title: '분석 완료' }
 ] as const;
 
 const topMenuLinks = [
@@ -202,25 +202,18 @@ export default function Home() {
         </nav>
       </header>
 
-      <nav className="scroll-nav" aria-label="섹션 이동">
-        {sections.map((section) => (
-          <a
-            key={section.id}
-            className={`dot ${activeSection === section.id ? 'is-active' : ''}`}
-            href={`#${section.id}`}
-          >
-            {section.label}
-          </a>
-        ))}
+      <nav className="scroll-nav" aria-label="자동 스크롤 제어">
         <button
           type="button"
           className={`auto-scroll-trigger ${isAutoScrollEnabled ? 'is-active' : ''}`}
-          aria-label="자동 스크롤 재생 또는 일시정지"
-          aria-pressed={isAutoScrollEnabled}
-          title={isAutoScrollEnabled ? '자동 스크롤 정지' : '자동 스크롤 시작 (6초 간격)'}
-          onClick={() => setIsAutoScrollEnabled((prev) => !prev)}
+          aria-label="마우스를 올리면 자동 스크롤"
+          title={isAutoScrollEnabled ? '자동 스크롤 진행 중' : '마우스를 올리면 자동 스크롤 시작 (6초 간격)'}
+          onMouseEnter={() => setIsAutoScrollEnabled(true)}
+          onMouseLeave={() => setIsAutoScrollEnabled(false)}
+          onFocus={() => setIsAutoScrollEnabled(true)}
+          onBlur={() => setIsAutoScrollEnabled(false)}
         >
-          <span aria-hidden="true">{isAutoScrollEnabled ? '❚❚' : '▶'}</span>
+          <span aria-hidden="true">▶</span>
         </button>
       </nav>
 
