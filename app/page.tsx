@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 const sections = [
   { id: 'section-1', label: '01', title: '소개' },
   { id: 'section-2', label: '02', title: '로그인/사이드바' },
-  { id: 'section-3', label: '03', title: '언어/기피재료' },
-  { id: 'section-4', label: '04', title: '기록/결과' },
+  { id: 'section-3', label: '03', title: '언어/분석기록' },
+  { id: 'section-4', label: '04', title: '기피재료/결과' },
   { id: 'section-5', label: '05', title: '분석 완료' }
 ] as const;
 
@@ -166,10 +166,10 @@ export default function Home() {
         <div className="content section-layout">
           <div className="section-head">
             <p className="eyebrow">Step 2</p>
-            <h2>언어 변경과 기피재료 입력</h2>
+            <h2>언어 변경과 분석기록 화면</h2>
             <p className="section-copy">
-              앱 언어를 팀/사용자 환경에 맞게 조정하고, 개인 기피재료를 등록해
-              분석 정확도를 높입니다.
+              앱 언어를 팀/사용자 환경에 맞게 설정하고, 기존 분석 이력을 확인해
+              빠르게 다음 분석을 이어갈 수 있습니다.
             </p>
           </div>
           <div className="frames-grid">
@@ -179,9 +179,9 @@ export default function Home() {
               alt="SafePlate 언어 변경 화면"
             />
             <DeviceShot
-              title="기피재료 입력 화면"
-              src="/images/avoid.png"
-              alt="SafePlate 기피재료 입력 화면"
+              title="분석 기록 화면"
+              src="/images/history.png"
+              alt="SafePlate 분석 기록 화면"
             />
           </div>
         </div>
@@ -191,17 +191,17 @@ export default function Home() {
         <div className="content section-layout">
           <div className="section-head">
             <p className="eyebrow">Step 3</p>
-            <h2>분석기록과 분석 결과</h2>
+            <h2>기피재료 입력과 분석 결과</h2>
             <p className="section-copy">
-              이전 분석 이력을 빠르게 불러오고, 현재 메뉴판 분석 결과를 즉시
-              확인해 의사결정을 돕습니다.
+              개인 기준 기피재료를 입력한 뒤, 현재 메뉴판 분석 결과를 바로 확인해
+              실제 주문 전 위험 메뉴를 빠르게 걸러낼 수 있습니다.
             </p>
           </div>
           <div className="frames-grid">
             <DeviceShot
-              title="분석 기록 화면"
-              src="/images/history.png"
-              alt="SafePlate 분석 기록 화면"
+              title="기피재료 입력 화면"
+              src="/images/avoid.png"
+              alt="SafePlate 기피재료 입력 화면"
             />
             <DeviceShot
               title="분석 결과 화면"
@@ -224,23 +224,30 @@ export default function Home() {
           </div>
           <div className="scan-card">
             <div className="scan-stage">
-              <Image
-                className="scan-image"
-                src="/images/menu_english.png"
-                alt="분석 전 영문 메뉴"
-                width={1080}
-                height={760}
-              />
-              <div className="scan-after">
+              <div className="scan-layer base">
+                <Image
+                  className="scan-image"
+                  src="/images/menu_english.png"
+                  alt="분석 전 영문 메뉴"
+                  fill
+                  sizes="(max-width: 900px) 94vw, 1020px"
+                />
+              </div>
+              <div className="scan-layer after">
                 <Image
                   className="scan-image"
                   src="/images/menu_english_result.png"
                   alt="분석 후 영문 메뉴"
-                  width={1080}
-                  height={760}
+                  fill
+                  sizes="(max-width: 900px) 94vw, 1020px"
                 />
               </div>
+              <div className="scan-sheen" aria-hidden="true" />
               <div className="scan-bar" aria-hidden="true" />
+            </div>
+            <div className="scan-legend">
+              <span>Before</span>
+              <span>After</span>
             </div>
           </div>
         </div>
