@@ -17,7 +17,7 @@ type ShotCardProps = {
   alt: string;
 };
 
-const heroCarousel = [
+const loginSidebarSlides = [
   {
     title: '로그인 화면',
     src: '/images/login.png',
@@ -45,7 +45,7 @@ function ShotCard({ title, src, alt }: ShotCardProps) {
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
-  const [heroIndex, setHeroIndex] = useState(0);
+  const [showcaseIndex, setShowcaseIndex] = useState(0);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function Home() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setHeroIndex((prev) => (prev + 1) % heroCarousel.length);
+      setShowcaseIndex((prev) => (prev + 1) % loginSidebarSlides.length);
     }, 3000);
 
     return () => window.clearInterval(timer);
@@ -115,17 +115,17 @@ export default function Home() {
           sectionRefs.current[0] = el;
         }}
       >
-        <div className="content hero">
-          <div className="hero-copy">
+        <div className="content intro-layout">
+          <div className="intro-copy">
             <p className="eyebrow">SafePlate</p>
-            <h1>App Design</h1>
+            <h1>SafePlate</h1>
             <p className="lead">
-              SafePlate는 민트/스카이 기반의 부드러운 톤과 직관적인 정보 계층으로,
-              사용자에게 안전한 메뉴 선택 과정을 빠르게 안내하도록 설계했습니다.
+              알러지, 종교, 식습관에 따른 기피 재료를 반영해 메뉴판을 분석하고,
+              더 안전한 메뉴 선택을 돕는 모바일 앱입니다.
             </p>
             <p className="lead secondary">
-              핵심 화면은 입력과 결과 확인에 집중할 수 있게 구성하고, 한눈에 읽히는
-              인터페이스를 목표로 디자인했습니다.
+              기피재료 입력부터 분석 결과 확인까지, 필요한 정보가 빠르게 읽히는
+              흐름으로 구성했습니다.
             </p>
             <div className="cta-row">
               <a
@@ -142,29 +142,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hero-preview">
-            <article className="shot-card hero-switch-card" key={heroCarousel[heroIndex].src}>
-              <div className="shot-text">
-                <h3>{heroCarousel[heroIndex].title}</h3>
-              </div>
-              <div className="shot-media hero-switch-media">
-                <Image
-                  src={heroCarousel[heroIndex].src}
-                  alt={heroCarousel[heroIndex].alt}
-                  width={420}
-                  height={900}
-                  className="shot-image hero-switch-image"
-                />
-              </div>
-              <div className="switch-dots" aria-hidden="true">
-                {heroCarousel.map((item, idx) => (
-                  <span
-                    key={item.src}
-                    className={`switch-dot ${idx === heroIndex ? 'is-active' : ''}`}
-                  />
-                ))}
-              </div>
-            </article>
+          <div className="intro-visual">
+            <Image
+              src="/images/Logo_noText.png"
+              alt="SafePlate 로고"
+              width={520}
+              height={520}
+              className="intro-logo"
+              priority
+            />
           </div>
         </div>
       </section>
@@ -176,14 +162,38 @@ export default function Home() {
           sectionRefs.current[1] = el;
         }}
       >
-        <div className="content section-content">
-          <div className="section-head">
+        <div className="content showcase-layout">
+          <div className="showcase-copy">
+            <p className="eyebrow">App Design</p>
             <h2>로그인과 사이드바</h2>
-            <p>앱 진입과 핵심 메뉴 접근 흐름을 한 화면에서 보여줍니다.</p>
+            <p>
+              SafePlate의 첫 인상은 빠른 로그인과 직관적인 사이드바 탐색 흐름에
+              맞춰 설계했습니다.
+            </p>
+            <p className="showcase-current">{loginSidebarSlides[showcaseIndex].title}</p>
           </div>
-          <div className="shot-grid">
-            <ShotCard title="로그인 화면" src="/images/login.png" alt="SafePlate 로그인 화면" />
-            <ShotCard title="사이드바 화면" src="/images/sidebar.png" alt="SafePlate 사이드바 화면" />
+
+          <div className="showcase-media">
+            <div className="showcase-image-stack">
+              {loginSidebarSlides.map((slide, idx) => (
+                <Image
+                  key={slide.src}
+                  src={slide.src}
+                  alt={slide.alt}
+                  width={420}
+                  height={900}
+                  className={`showcase-image ${idx === showcaseIndex ? 'is-active' : ''}`}
+                />
+              ))}
+            </div>
+            <div className="switch-dots" aria-hidden="true">
+              {loginSidebarSlides.map((item, idx) => (
+                <span
+                  key={item.src}
+                  className={`switch-dot ${idx === showcaseIndex ? 'is-active' : ''}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
