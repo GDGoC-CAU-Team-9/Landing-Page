@@ -225,14 +225,12 @@ export default function Home() {
         <button
           type="button"
           className={`auto-scroll-trigger ${isAutoScrollEnabled ? 'is-active' : ''}`}
-          aria-label="마우스를 올리면 자동 스크롤"
-          title={isAutoScrollEnabled ? '자동 스크롤 진행 중' : '마우스를 올리면 자동 스크롤 시작 (6초 간격)'}
-          onMouseEnter={() => setIsAutoScrollEnabled(true)}
-          onMouseLeave={() => setIsAutoScrollEnabled(false)}
-          onFocus={() => setIsAutoScrollEnabled(true)}
-          onBlur={() => setIsAutoScrollEnabled(false)}
+          aria-label={isAutoScrollEnabled ? '자동 스크롤 일시정지' : '자동 스크롤 시작'}
+          aria-pressed={isAutoScrollEnabled}
+          title={isAutoScrollEnabled ? '클릭해서 자동 스크롤 정지' : '클릭해서 자동 스크롤 시작 (6초 간격)'}
+          onClick={() => setIsAutoScrollEnabled((prev) => !prev)}
         >
-          <span aria-hidden="true">▶</span>
+          <span aria-hidden="true">{isAutoScrollEnabled ? '❚❚' : '▶'}</span>
         </button>
       </nav>
 
