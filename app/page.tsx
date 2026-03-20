@@ -212,7 +212,7 @@ export default function Home() {
           <div className="overview-header">
             <h1>SafePlate</h1>
             <p className="overview-subtitle">
-              낯선 메뉴판에서도 기피 재료를 기준으로 더 안전한 메뉴 선택을 돕는
+              낯선 언어의 메뉴판에서도 기피 재료를 기준으로 더 안전한 메뉴 선택을 돕는
               AI 기반 모바일 서비스
             </p>
             <p className="overview-description">
@@ -229,7 +229,7 @@ export default function Home() {
           <div className="overview-features">
             <article className="overview-feature-card">
               <span>🌿</span>
-              <h3>기피재료 기반 분석</h3>
+              <h3>기피재료 기반 AI 분석</h3>
               <p>개인/팀 기준으로 위험 메뉴를 필터링</p>
             </article>
             <article className="overview-feature-card">
