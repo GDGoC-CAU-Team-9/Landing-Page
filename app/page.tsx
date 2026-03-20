@@ -11,7 +11,7 @@ const sections = [
   { id: 'section-5', label: '05', title: '분석 완료' }
 ] as const;
 
-type ShotCardProps = {
+type SlideItem = {
   title: string;
   src: string;
   alt: string;
@@ -30,23 +30,85 @@ const loginSidebarSlides = [
   }
 ] as const;
 
-function ShotCard({ title, src, alt }: ShotCardProps) {
+const languageHistorySlides = [
+  {
+    title: '언어 변경 화면',
+    src: '/images/language.png',
+    alt: 'SafePlate 언어 변경 화면'
+  },
+  {
+    title: '분석 기록 화면',
+    src: '/images/history.png',
+    alt: 'SafePlate 분석 기록 화면'
+  }
+] as const;
+
+const avoidResultSlides = [
+  {
+    title: '기피재료 입력 화면',
+    src: '/images/avoid.png',
+    alt: 'SafePlate 기피재료 입력 화면'
+  },
+  {
+    title: '분석 결과 화면',
+    src: '/images/result.png',
+    alt: 'SafePlate 메뉴 분석 결과 화면'
+  }
+] as const;
+
+function ShowcaseBlock({
+  eyebrow,
+  title,
+  description,
+  slides,
+  currentIndex
+}: {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  slides: readonly SlideItem[];
+  currentIndex: number;
+}) {
   return (
-    <article className="shot-card">
-      <div className="shot-text">
-        <h3>{title}</h3>
+    <div className="content showcase-layout">
+      <div className="showcase-copy">
+        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <p className="showcase-current">{slides[currentIndex].title}</p>
       </div>
-      <div className="shot-media">
-        <Image src={src} alt={alt} width={420} height={900} className="shot-image" />
+
+      <div className="showcase-media">
+        <div className="showcase-image-stack">
+          {slides.map((slide, idx) => (
+            <Image
+              key={slide.src}
+              src={slide.src}
+              alt={slide.alt}
+              width={420}
+              height={900}
+              className={`showcase-image ${idx === currentIndex ? 'is-active' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="switch-dots" aria-hidden="true">
+          {slides.map((item, idx) => (
+            <span key={item.src} className={`switch-dot ${idx === currentIndex ? 'is-active' : ''}`} />
+          ))}
+        </div>
       </div>
-    </article>
+    </div>
   );
 }
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
-  const [showcaseIndex, setShowcaseIndex] = useState(0);
+  const [showcaseTick, setShowcaseTick] = useState(0);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const section2Index = showcaseTick % loginSidebarSlides.length;
+  const section3Index = showcaseTick % languageHistorySlides.length;
+  const section4Index = showcaseTick % avoidResultSlides.length;
 
   useEffect(() => {
     const sectionObserver = new IntersectionObserver(
@@ -71,7 +133,7 @@ export default function Home() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setShowcaseIndex((prev) => (prev + 1) % loginSidebarSlides.length);
+      setShowcaseTick((prev) => prev + 1);
     }, 3000);
 
     return () => window.clearInterval(timer);
@@ -143,14 +205,16 @@ export default function Home() {
           </div>
 
           <div className="intro-visual">
-            <Image
-              src="/images/Logo_noText.png"
-              alt="SafePlate 로고"
-              width={520}
-              height={520}
-              className="intro-logo"
-              priority
-            />
+            <div className="intro-logo-mask">
+              <Image
+                src="/images/Logo_noText.png"
+                alt="SafePlate 로고"
+                width={520}
+                height={520}
+                className="intro-logo"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -162,40 +226,13 @@ export default function Home() {
           sectionRefs.current[1] = el;
         }}
       >
-        <div className="content showcase-layout">
-          <div className="showcase-copy">
-            <p className="eyebrow">App Design</p>
-            <h2>로그인과 사이드바</h2>
-            <p>
-              SafePlate의 첫 인상은 빠른 로그인과 직관적인 사이드바 탐색 흐름에
-              맞춰 설계했습니다.
-            </p>
-            <p className="showcase-current">{loginSidebarSlides[showcaseIndex].title}</p>
-          </div>
-
-          <div className="showcase-media">
-            <div className="showcase-image-stack">
-              {loginSidebarSlides.map((slide, idx) => (
-                <Image
-                  key={slide.src}
-                  src={slide.src}
-                  alt={slide.alt}
-                  width={420}
-                  height={900}
-                  className={`showcase-image ${idx === showcaseIndex ? 'is-active' : ''}`}
-                />
-              ))}
-            </div>
-            <div className="switch-dots" aria-hidden="true">
-              {loginSidebarSlides.map((item, idx) => (
-                <span
-                  key={item.src}
-                  className={`switch-dot ${idx === showcaseIndex ? 'is-active' : ''}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        <ShowcaseBlock
+          eyebrow="App Design"
+          title="로그인과 사이드바"
+          description="SafePlate의 첫 인상은 빠른 로그인과 직관적인 사이드바 탐색 흐름에 맞춰 설계했습니다."
+          slides={loginSidebarSlides}
+          currentIndex={section2Index}
+        />
       </section>
 
       <section
@@ -205,16 +242,12 @@ export default function Home() {
           sectionRefs.current[2] = el;
         }}
       >
-        <div className="content section-content">
-          <div className="section-head">
-            <h2>언어 변경과 분석기록</h2>
-            <p>언어 설정과 과거 결과 이력 확인으로 분석 흐름을 이어갑니다.</p>
-          </div>
-          <div className="shot-grid">
-            <ShotCard title="언어 변경 화면" src="/images/language.png" alt="SafePlate 언어 변경 화면" />
-            <ShotCard title="분석 기록 화면" src="/images/history.png" alt="SafePlate 분석 기록 화면" />
-          </div>
-        </div>
+        <ShowcaseBlock
+          title="언어 변경과 분석기록"
+          description="언어 설정과 과거 결과 이력 확인으로 분석 흐름을 자연스럽게 이어갈 수 있습니다."
+          slides={languageHistorySlides}
+          currentIndex={section3Index}
+        />
       </section>
 
       <section
@@ -224,16 +257,12 @@ export default function Home() {
           sectionRefs.current[3] = el;
         }}
       >
-        <div className="content section-content">
-          <div className="section-head">
-            <h2>기피재료 입력과 분석 결과</h2>
-            <p>기피재료를 반영해 실제 메뉴판 분석 결과를 즉시 확인합니다.</p>
-          </div>
-          <div className="shot-grid">
-            <ShotCard title="기피재료 입력 화면" src="/images/avoid.png" alt="SafePlate 기피재료 입력 화면" />
-            <ShotCard title="분석 결과 화면" src="/images/result.png" alt="SafePlate 메뉴 분석 결과 화면" />
-          </div>
-        </div>
+        <ShowcaseBlock
+          title="기피재료 입력과 분석 결과"
+          description="기피재료를 반영한 메뉴 분석 결과를 즉시 보여주어 실제 주문 전에 빠르게 판단할 수 있습니다."
+          slides={avoidResultSlides}
+          currentIndex={section4Index}
+        />
       </section>
 
       <section
@@ -243,7 +272,7 @@ export default function Home() {
           sectionRefs.current[4] = el;
         }}
       >
-        <div className="content section-content">
+        <div className="content section-content scan-content">
           <div className="section-head">
             <h2>스캔 후 분석 완료 반영</h2>
             <p>검은 스캔 바가 지나간 영역이 분석 완료 상태로 바뀌는 연출입니다.</p>
