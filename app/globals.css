@@ -678,7 +678,7 @@ p {
 
   .content {
     height: auto;
-    min-height: calc(100dvh - 98px);
+    min-height: 0;
     border-radius: 24px;
     padding: 16px;
   }
@@ -692,8 +692,8 @@ p {
   }
 
   .showcase-image-stack {
-    width: min(100%, 540px);
-    height: clamp(430px, 60vh, 700px);
+    width: min(100%, 500px);
+    height: clamp(330px, 50vh, 580px);
   }
 
   .overview-layout {
@@ -729,6 +729,12 @@ p {
   }
 }
 
+@media (max-width: 860px) {
+  .top-links {
+    display: none;
+  }
+}
+
 @media (max-width: 680px) {
   .topbar {
     width: 100%;
@@ -737,7 +743,7 @@ p {
     border-radius: 0 0 14px 14px;
   }
 
-  .top-links {
+  .scroll-nav {
     display: none;
   }
 }

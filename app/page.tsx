@@ -15,7 +15,8 @@ const topMenuLinks = [
   { href: '#section-1', label: '소개' },
   { href: '#section-2', label: '디자인' },
   { href: '#section-3', label: '설정' },
-  { href: '#section-4', label: '분석 결과' }
+  { href: '#section-4', label: '분석' },
+  { href: '#section-5', label: '결과' }
 ] as const;
 
 type SlideItem = {
@@ -298,7 +299,7 @@ export default function Home() {
         <ShowcaseBlock
           title="언어 지원과 기피재료 설정"
           descriptionPrimary="한국어·영어·스페인어 다국어 지원으로 사용자 환경에 맞춰 앱을 사용할 수 있고, 앱 내에서 언어 변경도 가능합니다."
-          descriptionSecondary="사용자가 입력한 문장에서 AI가 기피재료를 추출하며, 종교·임신 등 프리셋을 통해 필요한 기피재료를 손쉽게 추가할 수 있습니다."
+          descriptionSecondary="사용자가 입력한 문장에서 AI가 기피재료를 추출하며, 종교·임신·비건 등 프리셋을 통해 필요한 기피재료를 손쉽게 추가할 수 있습니다."
           slides={languageAvoidSlides}
           currentIndex={section3Index}
         />
