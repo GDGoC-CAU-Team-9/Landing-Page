@@ -173,10 +173,28 @@ export default function Home() {
   useEffect(() => {
     if (!isAutoScrollEnabled) return;
 
+    const getCurrentSectionIndexFromScroll = () => {
+      const anchorY = window.scrollY + window.innerHeight * 0.35;
+      let currentIndex = 0;
+
+      for (let idx = 0; idx < sections.length; idx += 1) {
+        const sectionEl = document.getElementById(sections[idx].id);
+        if (!sectionEl) continue;
+
+        if (sectionEl.offsetTop <= anchorY) {
+          currentIndex = idx;
+          continue;
+        }
+
+        break;
+      }
+
+      return currentIndex;
+    };
+
     const timer = window.setInterval(() => {
-      const currentIndex = sections.findIndex((section) => section.id === activeSectionRef.current);
-      const safeIndex = currentIndex >= 0 ? currentIndex : 0;
-      const nextSection = sections[(safeIndex + 1) % sections.length];
+      const currentIndex = getCurrentSectionIndexFromScroll();
+      const nextSection = sections[(currentIndex + 1) % sections.length];
       document.getElementById(nextSection.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 6000);
 
