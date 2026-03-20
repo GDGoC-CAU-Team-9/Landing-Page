@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const sections = [
   { id: 'section-1', label: '01', title: '소개' },
@@ -11,25 +11,22 @@ const sections = [
   { id: 'section-5', label: '05', title: '분석 완료' }
 ] as const;
 
-type DeviceShotProps = {
+type ShotCardProps = {
   title: string;
+  subtitle: string;
   src: string;
   alt: string;
-  kind?: 'phone' | 'tablet';
 };
 
-function DeviceShot({ title, src, alt, kind = 'phone' }: DeviceShotProps) {
-  const width = kind === 'phone' ? 420 : 1080;
-  const height = kind === 'phone' ? 900 : 760;
-
+function ShotCard({ title, subtitle, src, alt }: ShotCardProps) {
   return (
     <article className="shot-card">
-      <h3>{title}</h3>
-      <div className={`device-frame ${kind}`}>
-        {kind === 'phone' && <span className="device-notch" aria-hidden="true" />}
-        <div className="device-screen">
-          <Image src={src} alt={alt} width={width} height={height} className="screenshot" />
-        </div>
+      <div className="shot-text">
+        <h3>{title}</h3>
+        <p>{subtitle}</p>
+      </div>
+      <div className="shot-media">
+        <Image src={src} alt={alt} width={420} height={900} className="shot-image" />
       </div>
     </article>
   );
@@ -37,40 +34,40 @@ function DeviceShot({ title, src, alt, kind = 'phone' }: DeviceShotProps) {
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const sectionObserver = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible?.target?.id) {
-          setActiveSection(visible.target.id);
-        }
+        entries.forEach((entry) => {
+          if (!entry.target.id) return;
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+            entry.target.classList.add('is-visible');
+          }
+        });
       },
-      { threshold: [0.35, 0.6, 0.85] }
+      { threshold: 0.42 }
     );
 
-    sections.forEach(({ id }) => {
-      const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
-      }
+    sectionRefs.current.forEach((section) => {
+      if (section) sectionObserver.observe(section);
     });
 
-    return () => observer.disconnect();
+    return () => sectionObserver.disconnect();
   }, []);
 
   return (
     <main className="page">
-      <div className="bg-layer" aria-hidden="true" />
+      <div className="bg-orb orb-a" aria-hidden="true" />
+      <div className="bg-orb orb-b" aria-hidden="true" />
+      <div className="bg-orb orb-c" aria-hidden="true" />
 
       <header className="topbar">
         <a className="brand" href="#section-1">
           SafePlate
         </a>
-        <nav className="top-links" aria-label="상단 메뉴">
+        <nav className="top-links" aria-label="메인 섹션">
           {sections.map((section) => (
             <a key={section.id} href={`#${section.id}`}>
               {section.title}
@@ -91,70 +88,87 @@ export default function Home() {
         ))}
       </nav>
 
-      <section className="panel" id="section-1">
-        <div className="content hero-layout">
+      <section
+        id="section-1"
+        className="panel fade-section"
+        ref={(el) => {
+          sectionRefs.current[0] = el;
+        }}
+      >
+        <div className="content hero">
           <div className="hero-copy">
-            <p className="eyebrow">Flutter App Landing</p>
-            <h1>SafePlate</h1>
-            <p className="section-copy lead">
+            <p className="eyebrow">Flutter Application</p>
+            <h1>SafePlate Landing</h1>
+            <p className="lead">
               알러지, 종교, 식습관에 따른 기피 재료를 반영해 메뉴판을 분석하고,
-              더 안전한 메뉴 선택을 돕는 앱입니다.
+              더 안전한 메뉴 선택을 돕는 모바일 앱입니다.
             </p>
-            <div className="summary-box">
-              로그인 → 언어 설정 → 사이드바 탐색 → 기피재료 입력 → 메뉴 분석 결과
+            <div className="flow-box">
+              로그인 → 언어 변경 → 사이드바 탐색 → 기피재료 입력 → 분석 결과 확인
             </div>
-            <ul className="feature-tags" aria-label="핵심 키워드">
-              <li>Flutter</li>
-              <li>Riverpod</li>
-              <li>다국어 지원</li>
-              <li>메뉴 이미지 분석</li>
-            </ul>
-            <div className="actions">
+            <div className="cta-row">
               <a
                 className="btn primary"
                 href="https://github.com/GDGoC-CAU-Team-9/frontend"
                 target="_blank"
                 rel="noreferrer"
               >
-                GitHub 저장소 보기
+                GitHub 저장소
               </a>
               <a className="btn ghost" href="#section-2">
-                기능 화면 보기
+                화면 보기
               </a>
             </div>
           </div>
-          <div className="hero-visual-wrap">
-            <div className="device-frame phone hero-device">
-              <span className="device-notch" aria-hidden="true" />
-              <div className="device-screen logo-screen">
-                <Image
-                  src="/images/Logo_noText.png"
-                  alt="SafePlate 앱 로고"
-                  width={520}
-                  height={520}
-                  priority
-                  className="logo-image"
-                />
-              </div>
+
+          <div className="hero-stats">
+            <div className="feature-card">
+              <span>🌿</span>
+              <h3>개인화 분석</h3>
+              <p>기피 재료 기반 메뉴 필터링</p>
+            </div>
+            <div className="feature-card">
+              <span>🌐</span>
+              <h3>다국어 UX</h3>
+              <p>글로벌 팀/사용자 대응</p>
+            </div>
+            <div className="feature-card">
+              <span>🧠</span>
+              <h3>결과 하이라이트</h3>
+              <p>위험 메뉴를 직관적으로 표시</p>
+            </div>
+            <div className="feature-card">
+              <span>📚</span>
+              <h3>분석 기록</h3>
+              <p>이력 조회로 빠른 재확인</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="panel" id="section-2">
-        <div className="content section-layout">
+      <section
+        id="section-2"
+        className="panel fade-section"
+        ref={(el) => {
+          sectionRefs.current[1] = el;
+        }}
+      >
+        <div className="content section-content">
           <div className="section-head">
             <p className="eyebrow">Step 1</p>
             <h2>로그인과 사이드바</h2>
-            <p className="section-copy">
-              인증 후 바로 사이드바에서 홈, 분석 기록, 팀 화면으로 빠르게 이동해
-              작업 흐름을 시작할 수 있습니다.
-            </p>
+            <p>앱 진입과 핵심 메뉴 접근 흐름을 한 화면에서 보여줍니다.</p>
           </div>
-          <div className="frames-grid">
-            <DeviceShot title="로그인 화면" src="/images/login.png" alt="SafePlate 로그인 화면" />
-            <DeviceShot
+          <div className="shot-grid">
+            <ShotCard
+              title="로그인 화면"
+              subtitle="빠른 인증으로 바로 시작"
+              src="/images/login.png"
+              alt="SafePlate 로그인 화면"
+            />
+            <ShotCard
               title="사이드바 화면"
+              subtitle="기능 탐색 중심 허브"
               src="/images/sidebar.png"
               alt="SafePlate 사이드바 화면"
             />
@@ -162,24 +176,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="panel" id="section-3">
-        <div className="content section-layout">
+      <section
+        id="section-3"
+        className="panel fade-section"
+        ref={(el) => {
+          sectionRefs.current[2] = el;
+        }}
+      >
+        <div className="content section-content">
           <div className="section-head">
             <p className="eyebrow">Step 2</p>
-            <h2>언어 변경과 분석기록 화면</h2>
-            <p className="section-copy">
-              앱 언어를 팀/사용자 환경에 맞게 설정하고, 기존 분석 이력을 확인해
-              빠르게 다음 분석을 이어갈 수 있습니다.
-            </p>
+            <h2>언어 변경과 분석기록</h2>
+            <p>언어 설정과 과거 결과 이력 확인으로 분석 흐름을 이어갑니다.</p>
           </div>
-          <div className="frames-grid">
-            <DeviceShot
+          <div className="shot-grid">
+            <ShotCard
               title="언어 변경 화면"
+              subtitle="팀 상황에 맞는 언어 선택"
               src="/images/language.png"
               alt="SafePlate 언어 변경 화면"
             />
-            <DeviceShot
+            <ShotCard
               title="분석 기록 화면"
+              subtitle="이전 분석 결과 재확인"
               src="/images/history.png"
               alt="SafePlate 분석 기록 화면"
             />
@@ -187,24 +206,29 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="panel" id="section-4">
-        <div className="content section-layout">
+      <section
+        id="section-4"
+        className="panel fade-section"
+        ref={(el) => {
+          sectionRefs.current[3] = el;
+        }}
+      >
+        <div className="content section-content">
           <div className="section-head">
             <p className="eyebrow">Step 3</p>
             <h2>기피재료 입력과 분석 결과</h2>
-            <p className="section-copy">
-              개인 기준 기피재료를 입력한 뒤, 현재 메뉴판 분석 결과를 바로 확인해
-              실제 주문 전 위험 메뉴를 빠르게 걸러낼 수 있습니다.
-            </p>
+            <p>기피재료를 반영해 실제 메뉴판 분석 결과를 즉시 확인합니다.</p>
           </div>
-          <div className="frames-grid">
-            <DeviceShot
+          <div className="shot-grid">
+            <ShotCard
               title="기피재료 입력 화면"
+              subtitle="개인/팀 기준 금기 재료 등록"
               src="/images/avoid.png"
               alt="SafePlate 기피재료 입력 화면"
             />
-            <DeviceShot
+            <ShotCard
               title="분석 결과 화면"
+              subtitle="위험 항목 시각 하이라이트"
               src="/images/result.png"
               alt="SafePlate 메뉴 분석 결과 화면"
             />
@@ -212,40 +236,46 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="panel" id="section-5">
-        <div className="content section-layout">
+      <section
+        id="section-5"
+        className="panel fade-section"
+        ref={(el) => {
+          sectionRefs.current[4] = el;
+        }}
+      >
+        <div className="content section-content">
           <div className="section-head">
             <p className="eyebrow">Step 4</p>
-            <h2>분석 전 → 분석 후 자동 전환</h2>
-            <p className="section-copy">
-              검은 스캔 바가 왼쪽에서 오른쪽으로 이동하면서 분석 전 메뉴가 분석 후
-              메뉴로 자연스럽게 바뀌는 과정을 보여줍니다.
-            </p>
+            <h2>스캔 후 분석 완료 반영</h2>
+            <p>검은 스캔 바가 지나간 영역이 분석 완료 상태로 바뀌는 연출입니다.</p>
           </div>
-          <div className="scan-card">
+
+          <div className="scan-wrap">
             <div className="scan-stage">
-              <div className="scan-layer base">
+              <div className="scan-layer before">
                 <Image
-                  className="scan-image"
                   src="/images/menu_english.png"
-                  alt="분석 전 영문 메뉴"
+                  alt="분석 전 메뉴판"
                   fill
-                  sizes="(max-width: 900px) 94vw, 1020px"
+                  sizes="(max-width: 980px) 94vw, 1080px"
+                  className="scan-image"
                 />
               </div>
+
               <div className="scan-layer after">
                 <Image
-                  className="scan-image"
                   src="/images/menu_english_result.png"
-                  alt="분석 후 영문 메뉴"
+                  alt="분석 후 메뉴판"
                   fill
-                  sizes="(max-width: 900px) 94vw, 1020px"
+                  sizes="(max-width: 980px) 94vw, 1080px"
+                  className="scan-image"
                 />
               </div>
-              <div className="scan-sheen" aria-hidden="true" />
+
+              <div className="scan-glow" aria-hidden="true" />
               <div className="scan-bar" aria-hidden="true" />
             </div>
-            <div className="scan-legend">
+            <div className="scan-labels">
               <span>Before</span>
               <span>After</span>
             </div>
