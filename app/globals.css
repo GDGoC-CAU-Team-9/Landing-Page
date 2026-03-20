@@ -248,26 +248,44 @@ p {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: clamp(16px, 2.4vw, 28px);
-  align-items: center;
+  align-items: start;
 }
 
 .intro-visual {
   display: grid;
-  place-items: center;
+  justify-items: center;
+  align-items: start;
+  padding-top: 6px;
 }
 
 .intro-logo-mask {
-  border-radius: 28px;
-  padding: 18px;
-  background: radial-gradient(circle at 50% 44%, rgba(240, 250, 255, 0.54) 0%, rgba(240, 250, 255, 0.14) 66%, transparent 92%);
+  position: relative;
+  border-radius: 38px;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(246, 253, 255, 0.74) 0%, rgba(243, 251, 255, 0.26) 56%, rgba(241, 250, 255, 0.06) 74%, transparent 92%),
+    radial-gradient(circle at 50% 78%, rgba(133, 205, 180, 0.14) 0%, transparent 62%);
+}
+
+.intro-logo-mask::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 38px;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.04) 66%, transparent 86%);
+  filter: blur(8px);
 }
 
 .intro-logo {
   width: min(100%, 420px);
   height: auto;
-  filter: drop-shadow(0 10px 26px rgba(32, 79, 115, 0.22));
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 68%, rgba(0, 0, 0, 0.18) 86%, transparent 98%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 68%, rgba(0, 0, 0, 0.18) 86%, transparent 98%);
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 12px 28px rgba(36, 88, 126, 0.2));
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 74%, rgba(0, 0, 0, 0.42) 86%, transparent 98%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 74%, rgba(0, 0, 0, 0.42) 86%, transparent 98%);
 }
 
 .lead {
@@ -566,10 +584,20 @@ p {
     font-size: 0.84rem;
   }
 
-  .intro-layout,
   .showcase-layout {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+}
+
+@media (max-width: 980px) {
+  .intro-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .intro-visual {
+    justify-items: start;
   }
 }
 

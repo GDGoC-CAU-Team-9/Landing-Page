@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 
 const sections = [
   { id: 'section-1', label: '01', title: '소개' },
-  { id: 'section-2', label: '02', title: '로그인/사이드바' },
-  { id: 'section-3', label: '03', title: '언어/분석기록' },
-  { id: 'section-4', label: '04', title: '기피재료/결과' },
+  { id: 'section-2', label: '02', title: '디자인' },
+  { id: 'section-3', label: '03', title: '언어/기피재료' },
+  { id: 'section-4', label: '04', title: 'AI분석/결과' },
   { id: 'section-5', label: '05', title: '분석 완료' }
 ] as const;
 
@@ -30,24 +30,24 @@ const loginSidebarSlides = [
   }
 ] as const;
 
-const languageHistorySlides = [
+const languageAvoidSlides = [
   {
     title: '언어 변경 화면',
     src: '/images/language.png',
     alt: 'SafePlate 언어 변경 화면'
   },
   {
-    title: '분석 기록 화면',
-    src: '/images/history.png',
-    alt: 'SafePlate 분석 기록 화면'
-  }
-] as const;
-
-const avoidResultSlides = [
-  {
     title: '기피재료 입력 화면',
     src: '/images/avoid.png',
     alt: 'SafePlate 기피재료 입력 화면'
+  }
+] as const;
+
+const analysisResultSlides = [
+  {
+    title: '분석 기록 화면',
+    src: '/images/history.png',
+    alt: 'SafePlate 분석 기록 화면'
   },
   {
     title: '분석 결과 화면',
@@ -107,8 +107,8 @@ export default function Home() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   const section2Index = showcaseTick % loginSidebarSlides.length;
-  const section3Index = showcaseTick % languageHistorySlides.length;
-  const section4Index = showcaseTick % avoidResultSlides.length;
+  const section3Index = showcaseTick % languageAvoidSlides.length;
+  const section4Index = showcaseTick % analysisResultSlides.length;
 
   useEffect(() => {
     const sectionObserver = new IntersectionObserver(
@@ -228,8 +228,8 @@ export default function Home() {
       >
         <ShowcaseBlock
           eyebrow="App Design"
-          title="로그인과 사이드바"
-          description="SafePlate의 첫 인상은 빠른 로그인과 직관적인 사이드바 탐색 흐름에 맞춰 설계했습니다."
+          title="낯선 메뉴판을 빠르게 이해하는 화면 설계"
+          description="SafePlate는 복잡한 메뉴판 정보를 빠르게 읽고 선택할 수 있도록, 로그인 이후 탐색 흐름과 정보 계층을 직관적으로 구성했습니다."
           slides={loginSidebarSlides}
           currentIndex={section2Index}
         />
@@ -243,9 +243,9 @@ export default function Home() {
         }}
       >
         <ShowcaseBlock
-          title="언어 변경과 분석기록"
-          description="언어 설정과 과거 결과 이력 확인으로 분석 흐름을 자연스럽게 이어갈 수 있습니다."
-          slides={languageHistorySlides}
+          title="언어 지원과 기피재료 설정"
+          description="회원가입/앱 내 언어 변경을 지원하고, 사용자가 문장으로 입력한 식이 제한에서 AI가 기피재료를 추출해 분석 기준을 자동 구성합니다."
+          slides={languageAvoidSlides}
           currentIndex={section3Index}
         />
       </section>
@@ -258,9 +258,9 @@ export default function Home() {
         }}
       >
         <ShowcaseBlock
-          title="기피재료 입력과 분석 결과"
-          description="기피재료를 반영한 메뉴 분석 결과를 즉시 보여주어 실제 주문 전에 빠르게 판단할 수 있습니다."
-          slides={avoidResultSlides}
+          title="AI 메뉴판 분석과 결과 제공"
+          description="메뉴판 이미지에서 텍스트를 추출하고 기피재료 기준으로 위험 메뉴를 분석합니다. 결과는 기록으로 저장되어 재확인과 재주문 판단에 활용됩니다."
+          slides={analysisResultSlides}
           currentIndex={section4Index}
         />
       </section>
