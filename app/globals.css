@@ -1,7 +1,7 @@
 :root {
-  --bg-1: #edf8f3;
-  --bg-2: #e8f1ff;
-  --bg-3: #f7fbff;
+  --bg-1: #0b121a;
+  --bg-2: #0f1a27;
+  --bg-3: #142231;
   --ink: #1f3a4f;
   --ink-soft: #587185;
   --mint: #7ad6bd;
@@ -31,8 +31,8 @@ body {
     sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 16% 18%, rgba(148, 221, 194, 0.36) 0%, transparent 34%),
-    radial-gradient(circle at 84% 16%, rgba(153, 192, 236, 0.34) 0%, transparent 34%),
+    radial-gradient(circle at 16% 18%, rgba(124, 212, 180, 0.2) 0%, transparent 36%),
+    radial-gradient(circle at 84% 16%, rgba(128, 176, 225, 0.2) 0%, transparent 36%),
     linear-gradient(150deg, var(--bg-1) 0%, var(--bg-2) 48%, var(--bg-3) 100%);
 }
 
@@ -54,7 +54,7 @@ body {
   height: 320px;
   top: -40px;
   left: -60px;
-  background: rgba(131, 216, 184, 0.28);
+  background: rgba(124, 210, 178, 0.32);
 }
 
 .orb-b {
@@ -62,7 +62,7 @@ body {
   height: 360px;
   top: 26%;
   right: -110px;
-  background: rgba(128, 179, 229, 0.26);
+  background: rgba(122, 169, 220, 0.3);
 }
 
 .orb-c {
@@ -70,25 +70,25 @@ body {
   height: 280px;
   bottom: 10%;
   left: 40%;
-  background: rgba(175, 227, 243, 0.24);
+  background: rgba(155, 209, 232, 0.25);
 }
 
 .topbar {
   position: fixed;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1180px, calc(100% - 30px));
+  top: 0;
+  left: 0;
+  transform: none;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.52) 0%, rgba(237, 248, 255, 0.36) 100%);
+  padding: 12px 24px;
+  border-radius: 0 0 18px 18px;
+  border: none;
+  background: linear-gradient(140deg, rgba(248, 253, 255, 0.9) 0%, rgba(235, 246, 255, 0.84) 100%);
   backdrop-filter: blur(16px) saturate(130%);
   -webkit-backdrop-filter: blur(16px) saturate(130%);
-  box-shadow: 0 10px 26px rgba(65, 105, 138, 0.15);
+  box-shadow: 0 12px 28px rgba(10, 22, 36, 0.34);
   z-index: 50;
 }
 
@@ -138,7 +138,7 @@ body {
   font-size: 11px;
   font-weight: 700;
   border: 1px solid rgba(126, 162, 189, 0.34);
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(245, 251, 255, 0.82);
   backdrop-filter: blur(8px);
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -181,10 +181,10 @@ body {
   width: min(1180px, 100%);
   height: min(830px, calc(100dvh - 122px));
   border-radius: 30px;
-  border: 1px solid var(--line);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(233, 245, 255, 0.3) 100%);
+  border: 1px solid rgba(168, 197, 222, 0.52);
+  background: linear-gradient(145deg, rgba(251, 254, 255, 0.88) 0%, rgba(240, 248, 255, 0.82) 100%);
   box-shadow:
-    0 18px 42px rgba(57, 92, 120, 0.15),
+    0 20px 46px rgba(7, 18, 30, 0.38),
     inset 0 1px 0 rgba(255, 255, 255, 0.66);
   backdrop-filter: blur(18px) saturate(138%);
   -webkit-backdrop-filter: blur(18px) saturate(138%);
@@ -303,8 +303,8 @@ p {
 
 .feature-card {
   border-radius: 18px;
-  border: 1px solid rgba(121, 159, 186, 0.3);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.32) 0%, rgba(230, 244, 255, 0.24) 100%);
+  border: 1px solid rgba(139, 173, 199, 0.36);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.62) 0%, rgba(238, 248, 255, 0.56) 100%);
   backdrop-filter: blur(10px);
   padding: 14px;
 }
@@ -342,10 +342,10 @@ p {
 
 .shot-card {
   border-radius: 20px;
-  border: 1px solid rgba(123, 160, 188, 0.28);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.34) 0%, rgba(228, 243, 255, 0.25) 100%);
+  border: 1px solid rgba(136, 171, 198, 0.36);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.68) 0%, rgba(236, 247, 255, 0.58) 100%);
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px rgba(56, 92, 121, 0.1);
+  box-shadow: 0 10px 24px rgba(29, 52, 73, 0.16);
   padding: 12px;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -543,9 +543,10 @@ p {
 
 @media (max-width: 680px) {
   .topbar {
-    width: calc(100% - 12px);
-    top: 8px;
+    width: 100%;
+    top: 0;
     padding: 10px 12px;
+    border-radius: 0 0 14px 14px;
   }
 
   .top-links {

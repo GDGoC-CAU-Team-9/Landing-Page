@@ -97,15 +97,11 @@ export default function Home() {
       >
         <div className="content hero">
           <div className="hero-copy">
-            <p className="eyebrow">Flutter Application</p>
-            <h1>SafePlate Landing</h1>
+            <h1>SafePlate</h1>
             <p className="lead">
               알러지, 종교, 식습관에 따른 기피 재료를 반영해 메뉴판을 분석하고,
               더 안전한 메뉴 선택을 돕는 모바일 앱입니다.
             </p>
-            <div className="flow-box">
-              로그인 → 언어 변경 → 사이드바 탐색 → 기피재료 입력 → 분석 결과 확인
-            </div>
             <div className="cta-row">
               <a
                 className="btn primary"
@@ -116,7 +112,7 @@ export default function Home() {
                 GitHub 저장소
               </a>
               <a className="btn ghost" href="#section-2">
-                화면 보기
+                자세히 보기
               </a>
             </div>
           </div>
