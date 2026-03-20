@@ -124,6 +124,7 @@ body {
   right: 14px;
   transform: translateY(-50%);
   display: grid;
+  justify-items: center;
   gap: 9px;
   z-index: 40;
 }
@@ -151,6 +152,47 @@ body {
 .dot.is-active {
   color: #1f4f71;
   background: linear-gradient(130deg, rgba(125, 214, 189, 0.36) 0%, rgba(140, 184, 230, 0.34) 100%);
+}
+
+.auto-scroll-trigger {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(126, 162, 189, 0.34);
+  background: rgba(245, 251, 255, 0.78);
+  color: #4d7088;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+  transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.auto-scroll-trigger::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 1px;
+  height: 8px;
+  background: rgba(155, 183, 205, 0.62);
+  transform: translateX(-50%);
+}
+
+.auto-scroll-trigger span {
+  transform: translateX(1px);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.auto-scroll-trigger:hover,
+.auto-scroll-trigger:focus-visible,
+.auto-scroll-trigger.is-active {
+  color: #1f4f71;
+  background: linear-gradient(130deg, rgba(125, 214, 189, 0.38) 0%, rgba(140, 184, 230, 0.36) 100%);
+  transform: scale(1.05);
 }
 
 .panel {
@@ -449,7 +491,7 @@ p {
 }
 
 .scan-content {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .section-head p {
@@ -505,13 +547,14 @@ p {
   display: grid;
   gap: 10px;
   height: 100%;
+  min-height: 0;
   align-content: start;
 }
 
 .scan-stage {
   position: relative;
   overflow: hidden;
-  width: min(100%, 900px);
+  width: min(100%, 840px);
   margin-inline: auto;
   border-radius: 18px;
   border: 1px solid rgba(117, 154, 182, 0.36);
@@ -673,6 +716,15 @@ p {
   .dot {
     width: 30px;
     height: 30px;
+    font-size: 10px;
+  }
+
+  .auto-scroll-trigger {
+    width: 30px;
+    height: 30px;
+  }
+
+  .auto-scroll-trigger span {
     font-size: 10px;
   }
 }

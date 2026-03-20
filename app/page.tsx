@@ -11,6 +11,13 @@ const sections = [
   { id: 'section-5', label: '05', title: '분석 완료' }
 ] as const;
 
+const topMenuLinks = [
+  { href: '#section-1', label: '소개' },
+  { href: '#section-2', label: '디자인' },
+  { href: '#section-3', label: '설정' },
+  { href: '#section-4', label: '분석 결과' }
+] as const;
+
 type SlideItem = {
   src: string;
   alt: string;
@@ -96,11 +103,17 @@ function ShowcaseBlock({
 export default function Home() {
   const [activeSection, setActiveSection] = useState('section-1');
   const [showcaseTick, setShowcaseTick] = useState(0);
+  const [isAutoScrollArmed, setIsAutoScrollArmed] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const activeSectionRef = useRef(activeSection);
 
   const section2Index = showcaseTick % loginSidebarSlides.length;
   const section3Index = showcaseTick % languageAvoidSlides.length;
   const section4Index = showcaseTick % analysisResultSlides.length;
+
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
 
   useEffect(() => {
     const sectionObserver = new IntersectionObserver(
@@ -131,6 +144,19 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if (!isAutoScrollArmed) return;
+
+    const timer = window.setInterval(() => {
+      const currentIndex = sections.findIndex((section) => section.id === activeSectionRef.current);
+      const safeIndex = currentIndex >= 0 ? currentIndex : 0;
+      const nextSection = sections[(safeIndex + 1) % sections.length];
+      document.getElementById(nextSection.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 6000);
+
+    return () => window.clearInterval(timer);
+  }, [isAutoScrollArmed]);
+
   return (
     <main className="page">
       <div className="bg-orb orb-a" aria-hidden="true" />
@@ -142,9 +168,9 @@ export default function Home() {
           SafePlate
         </a>
         <nav className="top-links" aria-label="메인 섹션">
-          {sections.map((section) => (
-            <a key={section.id} href={`#${section.id}`}>
-              {section.title}
+          {topMenuLinks.map((menu) => (
+            <a key={menu.label} href={menu.href}>
+              {menu.label}
             </a>
           ))}
         </nav>
@@ -160,6 +186,18 @@ export default function Home() {
             {section.label}
           </a>
         ))}
+        <button
+          type="button"
+          className={`auto-scroll-trigger ${isAutoScrollArmed ? 'is-active' : ''}`}
+          aria-label="자동 스크롤 미리보기"
+          title="마우스를 올리면 6초마다 다음 섹션으로 이동합니다."
+          onMouseEnter={() => setIsAutoScrollArmed(true)}
+          onMouseLeave={() => setIsAutoScrollArmed(false)}
+          onFocus={() => setIsAutoScrollArmed(true)}
+          onBlur={() => setIsAutoScrollArmed(false)}
+        >
+          <span aria-hidden="true">▶</span>
+        </button>
       </nav>
 
       <section
