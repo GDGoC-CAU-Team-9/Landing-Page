@@ -174,7 +174,8 @@ export default function Home() {
     if (!isAutoScrollEnabled) return;
 
     const getCurrentSectionIndexFromScroll = () => {
-      const anchorY = window.scrollY + window.innerHeight * 0.35;
+      // Use the top-edge scroll position so we do not advance too early on shorter sections.
+      const anchorY = window.scrollY + 1;
       let currentIndex = 0;
 
       for (let idx = 0; idx < sections.length; idx += 1) {
