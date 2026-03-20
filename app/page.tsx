@@ -50,24 +50,24 @@ const analysisResultSlides = [
 ] as const;
 
 function ShowcaseBlock({
-  eyebrow,
   title,
-  description,
+  descriptionPrimary,
+  descriptionSecondary,
   slides,
   currentIndex
 }: {
-  eyebrow?: string;
   title: string;
-  description: string;
+  descriptionPrimary: string;
+  descriptionSecondary: string;
   slides: readonly SlideItem[];
   currentIndex: number;
 }) {
   return (
     <div className="content showcase-layout">
       <div className="showcase-copy">
-        {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
         <h2>{title}</h2>
-        <p>{description}</p>
+        <p>{descriptionPrimary}</p>
+        <p>{descriptionSecondary}</p>
       </div>
 
       <div className="showcase-media">
@@ -183,8 +183,8 @@ export default function Home() {
           </div>
 
           <div className="pipeline-box">
-            메뉴판 이미지 입력 → 텍스트 추출 및 AI 분석 → 기피재료 위험 메뉴
-            표시 → 안전한 선택 가이드 제공
+            메뉴판 이미지 입력 → 문장에서 추출한 기피재료 기반 AI 분석 → 위험 메뉴
+            표시 및 안전한 선택 가이드 제공
           </div>
 
           <div className="overview-features">
@@ -206,7 +206,7 @@ export default function Home() {
             <article className="overview-feature-card">
               <span>📚</span>
               <h3>분석 기록 저장</h3>
-              <p>이전 결과를 다시 확인해 빠른 재판단</p>
+              <p>분석 결과 재확인 가능</p>
             </article>
           </div>
 
@@ -214,8 +214,7 @@ export default function Home() {
             <span>지원 플랫폼</span>
             <div className="platform-items">
               <p>🍎 macOS</p>
-              <p>🐧 Linux</p>
-              <p>🪟 Windows</p>
+              <p>🤖 Android</p>
             </div>
           </div>
 
@@ -243,9 +242,9 @@ export default function Home() {
         }}
       >
         <ShowcaseBlock
-          eyebrow="App Design"
           title="눈이 편한 색감과 쉬운 화면 설계"
-          description="글래스모피즘 기반의 부드러운 색감과 단순한 정보 구조로, 누구나 처음 실행해도 로그인부터 탐색까지 자연스럽게 사용할 수 있도록 설계했습니다."
+          descriptionPrimary="글래스모피즘 기반의 부드러운 색감과 낮은 대비 피로도로, 화면을 오래 봐도 부담이 적은 UI를 구성했습니다."
+          descriptionSecondary="누구나 처음 실행해도 로그인부터 탐색까지 자연스럽게 이해할 수 있도록, 기능 진입 흐름을 단순하고 직관적으로 설계했습니다."
           slides={loginSidebarSlides}
           currentIndex={section2Index}
         />
@@ -260,7 +259,8 @@ export default function Home() {
       >
         <ShowcaseBlock
           title="언어 지원과 기피재료 설정"
-          description="한국어·영어·스페인어를 포함한 다국어 지원을 제공하고, 사용자가 입력한 문장에서 AI가 기피재료를 추출합니다. 또한 종교·임신 등 프리셋으로 필요한 기피재료를 쉽게 추가할 수 있습니다."
+          descriptionPrimary="한국어·영어·스페인어 다국어 지원으로 사용자 환경에 맞춰 앱을 사용할 수 있고, 앱 내에서 언어 변경도 가능합니다."
+          descriptionSecondary="사용자가 입력한 문장에서 AI가 기피재료를 추출하며, 종교·임신 등 프리셋을 통해 필요한 기피재료를 손쉽게 추가할 수 있습니다."
           slides={languageAvoidSlides}
           currentIndex={section3Index}
         />
@@ -275,7 +275,8 @@ export default function Home() {
       >
         <ShowcaseBlock
           title="AI 메뉴판 분석과 결과 제공"
-          description="AI가 메뉴판 이미지를 OCR로 추출하고, 설정한 기피재료와 매칭해 위험 메뉴를 분석합니다. 분석 결과는 기록으로 저장되어 이후 재확인과 비교에 활용할 수 있습니다."
+          descriptionPrimary="AI가 메뉴판 이미지를 OCR로 추출한 뒤, 설정한 기피재료와 메뉴 텍스트를 매칭하여 위험 메뉴를 분석합니다."
+          descriptionSecondary="분석 결과는 기록으로 저장되어 이전 결과를 다시 확인할 수 있고, 반복 주문이나 비교 판단에 활용할 수 있습니다."
           slides={analysisResultSlides}
           currentIndex={section4Index}
         />
@@ -316,12 +317,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="scan-glow" aria-hidden="true" />
               <div className="scan-bar" aria-hidden="true" />
-            </div>
-            <div className="scan-labels">
-              <span>Before</span>
-              <span>After</span>
             </div>
           </div>
         </div>
