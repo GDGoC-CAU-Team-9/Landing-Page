@@ -256,8 +256,8 @@ p {
 
 .overview-layout {
   display: grid;
-  grid-template-rows: auto auto auto auto auto;
-  gap: clamp(12px, 1.8vw, 22px);
+  grid-template-rows: auto auto auto auto;
+  gap: clamp(14px, 2vw, 24px);
   align-content: center;
   height: 100%;
 }
@@ -265,63 +265,60 @@ p {
 .overview-header {
   text-align: center;
   display: grid;
-  gap: 10px;
+  gap: clamp(8px, 1vw, 12px);
+  max-width: 980px;
+  margin-inline: auto;
 }
 
 .overview-subtitle {
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   color: #365e7b;
   font-weight: 700;
+  line-height: 1.4;
+  max-width: 1060px;
+  margin-inline: auto;
 }
 
 .overview-description {
-  max-width: 900px;
+  max-width: 860px;
   margin-inline: auto;
   font-size: clamp(1rem, 1.5vw, 1.14rem);
-}
-
-.pipeline-box {
-  border-radius: 16px;
-  border: 1px solid rgba(126, 166, 194, 0.38);
-  background: linear-gradient(130deg, rgba(131, 215, 190, 0.24) 0%, rgba(136, 180, 228, 0.22) 100%);
-  padding: 14px 18px;
-  text-align: center;
-  color: #2f5d7c;
-  font-weight: 600;
+  line-height: 1.58;
 }
 
 .overview-features {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 .overview-feature-card {
   border-radius: 18px;
   border: 1px solid rgba(135, 169, 195, 0.4);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.72) 0%, rgba(236, 248, 255, 0.62) 100%);
-  padding: 14px;
+  padding: 16px 18px;
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .overview-feature-card span {
-  font-size: 1.12rem;
+  font-size: 1.16rem;
 }
 
 .overview-feature-card h3 {
   color: #2c5f82;
-  font-size: 1rem;
+  font-size: 1.04rem;
 }
 
 .overview-feature-card p {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
 .platform-row {
   display: grid;
   justify-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .platform-row > span {
@@ -337,8 +334,12 @@ p {
 }
 
 .platform-items p {
-  font-size: 0.96rem;
+  font-size: 1rem;
   font-weight: 600;
+}
+
+.overview-layout .cta-row {
+  margin-top: 6px;
 }
 
 .lead {

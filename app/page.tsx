@@ -254,11 +254,6 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="pipeline-box">
-            메뉴판 이미지 입력 → 문장에서 추출한 기피재료 기반 AI 분석 → 위험 메뉴
-            표시 및 안전한 선택 가이드 제공
-          </div>
-
           <div className="overview-features">
             <article className="overview-feature-card">
               <span>🌐</span>
