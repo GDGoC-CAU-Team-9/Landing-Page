@@ -12,19 +12,16 @@ const sections = [
 ] as const;
 
 type SlideItem = {
-  title: string;
   src: string;
   alt: string;
 };
 
 const loginSidebarSlides = [
   {
-    title: '로그인 화면',
     src: '/images/login.png',
     alt: 'SafePlate 로그인 화면'
   },
   {
-    title: '사이드바 화면',
     src: '/images/sidebar.png',
     alt: 'SafePlate 사이드바 화면'
   }
@@ -32,12 +29,10 @@ const loginSidebarSlides = [
 
 const languageAvoidSlides = [
   {
-    title: '언어 변경 화면',
     src: '/images/language.png',
     alt: 'SafePlate 언어 변경 화면'
   },
   {
-    title: '기피재료 입력 화면',
     src: '/images/avoid.png',
     alt: 'SafePlate 기피재료 입력 화면'
   }
@@ -45,12 +40,10 @@ const languageAvoidSlides = [
 
 const analysisResultSlides = [
   {
-    title: '분석 기록 화면',
     src: '/images/history.png',
     alt: 'SafePlate 분석 기록 화면'
   },
   {
-    title: '분석 결과 화면',
     src: '/images/result.png',
     alt: 'SafePlate 메뉴 분석 결과 화면'
   }
@@ -75,7 +68,6 @@ function ShowcaseBlock({
         {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
         <h2>{title}</h2>
         <p>{description}</p>
-        <p className="showcase-current">{slides[currentIndex].title}</p>
       </div>
 
       <div className="showcase-media">
@@ -177,44 +169,68 @@ export default function Home() {
           sectionRefs.current[0] = el;
         }}
       >
-        <div className="content intro-layout">
-          <div className="intro-copy">
-            <p className="eyebrow">SafePlate</p>
+        <div className="content overview-layout">
+          <div className="overview-header">
             <h1>SafePlate</h1>
-            <p className="lead">
-              알러지, 종교, 식습관에 따른 기피 재료를 반영해 메뉴판을 분석하고,
-              더 안전한 메뉴 선택을 돕는 모바일 앱입니다.
+            <p className="overview-subtitle">
+              낯선 메뉴판에서도 기피 재료를 기준으로 더 안전한 메뉴 선택을 돕는
+              AI 기반 모바일 서비스
             </p>
-            <p className="lead secondary">
-              기피재료 입력부터 분석 결과 확인까지, 필요한 정보가 빠르게 읽히는
-              흐름으로 구성했습니다.
+            <p className="overview-description">
+              메뉴판 이미지를 분석해 음식별 위험도를 표시하고, 사용자의 알레르기·종교·식습관 정보를
+              반영해 안심 메뉴를 빠르게 확인할 수 있습니다.
             </p>
-            <div className="cta-row">
-              <a
-                className="btn primary"
-                href="https://github.com/GDGoC-CAU-Team-9/frontend"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub 저장소
-              </a>
-              <a className="btn ghost" href="#section-2">
-                자세히 보기
-              </a>
+          </div>
+
+          <div className="pipeline-box">
+            메뉴판 이미지 입력 → 텍스트 추출 및 AI 분석 → 기피재료 위험 메뉴
+            표시 → 안전한 선택 가이드 제공
+          </div>
+
+          <div className="overview-features">
+            <article className="overview-feature-card">
+              <span>🌿</span>
+              <h3>기피재료 기반 분석</h3>
+              <p>개인/팀 기준으로 위험 메뉴를 필터링</p>
+            </article>
+            <article className="overview-feature-card">
+              <span>🌐</span>
+              <h3>다국어 지원</h3>
+              <p>언어 설정과 변경으로 글로벌 환경 대응</p>
+            </article>
+            <article className="overview-feature-card">
+              <span>🤖</span>
+              <h3>AI 문장 이해</h3>
+              <p>문장 입력에서 기피재료 자동 추출</p>
+            </article>
+            <article className="overview-feature-card">
+              <span>📚</span>
+              <h3>분석 기록 저장</h3>
+              <p>이전 결과를 다시 확인해 빠른 재판단</p>
+            </article>
+          </div>
+
+          <div className="platform-row">
+            <span>지원 플랫폼</span>
+            <div className="platform-items">
+              <p>🍎 macOS</p>
+              <p>🐧 Linux</p>
+              <p>🪟 Windows</p>
             </div>
           </div>
 
-          <div className="intro-visual">
-            <div className="intro-logo-mask">
-              <Image
-                src="/images/Logo_noText.png"
-                alt="SafePlate 로고"
-                width={520}
-                height={520}
-                className="intro-logo"
-                priority
-              />
-            </div>
+          <div className="cta-row centered">
+            <a
+              className="btn primary"
+              href="https://github.com/GDGoC-CAU-Team-9/frontend"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub에서 보기
+            </a>
+            <a className="btn ghost" href="#section-2">
+              자세히 보기
+            </a>
           </div>
         </div>
       </section>
@@ -228,8 +244,8 @@ export default function Home() {
       >
         <ShowcaseBlock
           eyebrow="App Design"
-          title="낯선 메뉴판을 빠르게 이해하는 화면 설계"
-          description="SafePlate는 복잡한 메뉴판 정보를 빠르게 읽고 선택할 수 있도록, 로그인 이후 탐색 흐름과 정보 계층을 직관적으로 구성했습니다."
+          title="눈이 편한 색감과 쉬운 화면 설계"
+          description="글래스모피즘 기반의 부드러운 색감과 단순한 정보 구조로, 누구나 처음 실행해도 로그인부터 탐색까지 자연스럽게 사용할 수 있도록 설계했습니다."
           slides={loginSidebarSlides}
           currentIndex={section2Index}
         />
@@ -244,7 +260,7 @@ export default function Home() {
       >
         <ShowcaseBlock
           title="언어 지원과 기피재료 설정"
-          description="회원가입/앱 내 언어 변경을 지원하고, 사용자가 문장으로 입력한 식이 제한에서 AI가 기피재료를 추출해 분석 기준을 자동 구성합니다."
+          description="한국어·영어·스페인어를 포함한 다국어 지원을 제공하고, 사용자가 입력한 문장에서 AI가 기피재료를 추출합니다. 또한 종교·임신 등 프리셋으로 필요한 기피재료를 쉽게 추가할 수 있습니다."
           slides={languageAvoidSlides}
           currentIndex={section3Index}
         />
@@ -259,7 +275,7 @@ export default function Home() {
       >
         <ShowcaseBlock
           title="AI 메뉴판 분석과 결과 제공"
-          description="메뉴판 이미지에서 텍스트를 추출하고 기피재료 기준으로 위험 메뉴를 분석합니다. 결과는 기록으로 저장되어 재확인과 재주문 판단에 활용됩니다."
+          description="AI가 메뉴판 이미지를 OCR로 추출하고, 설정한 기피재료와 매칭해 위험 메뉴를 분석합니다. 분석 결과는 기록으로 저장되어 이후 재확인과 비교에 활용할 수 있습니다."
           slides={analysisResultSlides}
           currentIndex={section4Index}
         />
@@ -274,8 +290,8 @@ export default function Home() {
       >
         <div className="content section-content scan-content">
           <div className="section-head">
-            <h2>스캔 후 분석 완료 반영</h2>
-            <p>검은 스캔 바가 지나간 영역이 분석 완료 상태로 바뀌는 연출입니다.</p>
+            <h2>분석 후 기존 메뉴판에서 안전한 메뉴 표시</h2>
+            <p>AI 분석 이후 원본 메뉴판에서 안전한 메뉴를 직관적으로 확인할 수 있습니다.</p>
           </div>
 
           <div className="scan-wrap">
