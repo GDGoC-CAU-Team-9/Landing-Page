@@ -102,65 +102,61 @@ function ShowcaseBlock({
 }
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState('section-1');
   const [showcaseTick, setShowcaseTick] = useState(0);
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const activeSectionRef = useRef(activeSection);
 
   const section2Index = showcaseTick % loginSidebarSlides.length;
   const section3Index = showcaseTick % languageAvoidSlides.length;
   const section4Index = showcaseTick % analysisResultSlides.length;
 
   useEffect(() => {
-    activeSectionRef.current = activeSection;
-  }, [activeSection]);
+    if (typeof window === 'undefined' || !('matchMedia' in window)) return;
+
+    const mediaQuery = window.matchMedia('(max-width: 860px), (hover: none) and (pointer: coarse)');
+    const updateViewport = () => setIsMobileViewport(mediaQuery.matches);
+
+    updateViewport();
+    mediaQuery.addEventListener('change', updateViewport);
+
+    return () => mediaQuery.removeEventListener('change', updateViewport);
+  }, []);
 
   useEffect(() => {
     const firstSection = sectionRefs.current[0];
     if (firstSection) {
       firstSection.classList.add('is-visible');
-      if (firstSection.id) setActiveSection(firstSection.id);
     }
 
-    if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+    if (isMobileViewport) {
       sectionRefs.current.forEach((section) => section?.classList.add('is-visible'));
       return;
     }
 
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        let bestRatio = 0;
-        let nextActiveId = '';
+    const revealVisibleSections = () => {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const revealStart = viewportHeight * 0.88;
+      const revealEnd = viewportHeight * 0.12;
 
-        entries.forEach((entry) => {
-          const entryId = (entry.target as HTMLElement).id;
-          if (!entryId) return;
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            if (entry.intersectionRatio >= bestRatio) {
-              bestRatio = entry.intersectionRatio;
-              nextActiveId = entryId;
-            }
-          }
-        });
+      sectionRefs.current.forEach((section) => {
+        if (!section || section.classList.contains('is-visible')) return;
 
-        if (nextActiveId) {
-          setActiveSection(nextActiveId);
-        }
-      },
-      {
-        threshold: [0.12, 0.22, 0.32],
-        rootMargin: '-6% 0px -10% 0px'
-      }
-    );
+        const rect = section.getBoundingClientRect();
+        const isInRevealRange = rect.top <= revealStart && rect.bottom >= revealEnd;
+        if (isInRevealRange) section.classList.add('is-visible');
+      });
+    };
 
-    sectionRefs.current.forEach((section) => {
-      if (section) sectionObserver.observe(section);
-    });
+    revealVisibleSections();
+    window.addEventListener('scroll', revealVisibleSections, { passive: true });
+    window.addEventListener('resize', revealVisibleSections);
 
-    return () => sectionObserver.disconnect();
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', revealVisibleSections);
+      window.removeEventListener('resize', revealVisibleSections);
+    };
+  }, [isMobileViewport]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {

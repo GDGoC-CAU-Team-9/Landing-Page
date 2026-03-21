@@ -18,6 +18,7 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  touch-action: pan-y;
 }
 
 body {
@@ -635,6 +636,17 @@ p {
 }
 
 @media (max-width: 860px) {
+  .bg-orb {
+    display: none;
+  }
+
+  .fade-section {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
   .panel {
     padding: 74px 12px 22px;
     min-height: auto;
